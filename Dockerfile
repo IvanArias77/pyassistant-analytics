@@ -27,5 +27,4 @@ EXPOSE 8000
 
 # Run with gunicorn + uvicorn workers for production
 # Uses Railway's $PORT env var (defaulting to 8000 if not set)
-CMD ["sh", "-c", "gunicorn main:app --workers 2 --worker-class uvicorn.workers.UvicornWorker --bind 0.0.0.0:${PORT:-8000} --access-logfile - --timeout 120"]</content>
-</invoke>
+CMD ["sh", "-c", "gunicorn main:app --workers 2 --worker-class uvicorn.workers.UvicornWorker --bind 0.0.0.0:${PORT:-8000} --access-logfile - --timeout 120"]
