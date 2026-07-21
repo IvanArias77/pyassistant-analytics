@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PyAssistant Analytics — Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <span class="logo-icon">🧠</span>
+                    <h1>PyAssistant Analytics</h1>
+                </div>
+                <div class="header-actions">
+                    <select id="languageSelector" class="lang-selector">
+                        <option value="es">🇪🇸 ES</option>
+                        <option value="en">🇬🇧 EN</option>
+                    </select>
+                    <a href="/docs" target="_blank" class="btn-link">API Docs</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="container">
+            <button class="nav-btn active" data-view="overview">
+                <span>📊</span> <span data-i18n="overview">Resumen</span>
+            </button>
+            <button class="nav-btn" data-view="daily">
+                <span>📅</span> <span data-i18n="daily">Tendencia Diaria</span>
+            </button>
+            <button class="nav-btn" data-view="categories">
+                <span>🎯</span> <span data-i18n="categories">Por Categoría</span>
+            </button>
+            <button class="nav-btn" data-view="chat">
+                <span>🤖</span> <span data-i18n="chat">Chat con IA</span>
+            </button>
+            <button class="nav-btn" data-view="add">
+                <span>➕</span> <span data-i18n="add">Agregar</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="container">
+
+            <!-- Overview View -->
+            <section id="overview" class="view active">
+                <h2 data-i18n="overviewTitle">Resumen General</h2>
+                <p class="subtitle" data-i18n="overviewSubtitle">Tu productividad en los últimos 30 días</p>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">📈</div>
+                        <div class="stat-value" id="totalActivities">--</div>
+                        <div class="stat-label" data-i18n="totalActivities">Actividades totales</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">⏱️</div>
+                        <div class="stat-value" id="totalHours">--</div>
+                        <div class="stat-label" data-i18n="totalHours">Horas totales</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">⭐</div>
+                        <div class="stat-value" id="avgScore">--</div>
+                        <div class="stat-label" data-i18n="avgScore">Productividad promedio</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">🏆</div>
+                        <div class="stat-value" id="bestDay">--</div>
+                        <div class="stat-label" data-i18n="bestDay">Mejor día</div>
+                    </div>
+                </div>
+
+                <div class="ai-insights-card">
+                    <div class="card-header">
+                        <h3>🤖 <span data-i18n="aiInsights">Insights de IA</span></h3>
+                        <button id="generateInsightsBtn" class="btn-primary">
+                            <span data-i18n="generate">Generar análisis</span>
+                        </button>
+                    </div>
+                    <div id="aiInsightsContent" class="ai-content">
+                        <p class="placeholder" data-i18n="insightsPlaceholder">
+                            Haz clic en "Generar análisis" para obtener insights personalizados sobre tu productividad usando IA.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Daily View -->
+            <section id="daily" class="view">
+                <h2 data-i18n="dailyTitle">Tendencia Diaria</h2>
+                <p class="subtitle" data-i18n="dailySubtitle">Últimos 7 días</p>
+                <div class="chart-container">
+                    <canvas id="dailyChart"></canvas>
+                </div>
+            </section>
+
+            <!-- Categories View -->
+            <section id="categories" class="view">
+                <h2 data-i18n="categoriesTitle">Distribución por Categoría</h2>
+                <p class="subtitle" data-i18n="categoriesSubtitle">En qué estás invirtiendo tu tiempo</p>
+                <div class="chart-container">
+                    <canvas id="categoriesChart"></canvas>
+                </div>
+                <div id="categoriesList" class="categories-list"></div>
+            </section>
+
+            <!-- Chat View -->
+            <section id="chat" class="view">
+                <h2 data-i18n="chatTitle">Chat con tu Asistente IA</h2>
+                <p class="subtitle" data-i18n="chatSubtitle">Pregunta lo que quieras sobre tu productividad</p>
+
+                <div class="chat-container">
+                    <div id="chatMessages" class="chat-messages">
+                        <div class="chat-message bot">
+                            <div class="message-avatar">🤖</div>
+                            <div class="message-content">
+                                <p data-i18n="chatWelcome">¡Hola! Soy tu asistente de productividad. Pregúntame sobre tus datos. Por ejemplo:</p>
+                                <ul>
+                                    <li data-i18n="chatExample1">¿Cuál fue mi mejor semana?</li>
+                                    <li data-i18n="chatExample2">¿En qué categoría gasto más tiempo?</li>
+                                    <li data-i18n="chatExample3">¿Cuánto tiempo dediqué a aprender este mes?</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="chat-input-container">
+                        <input
+                            type="text"
+                            id="chatInput"
+                            class="chat-input"
+                            placeholder="Escribe tu pregunta aquí..."
+                            data-i18n-placeholder="chatPlaceholder"
+                        />
+                        <button id="chatSendBtn" class="btn-primary">
+                            <span data-i18n="send">Enviar</span>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Add Activity View -->
+            <section id="add" class="view">
+                <h2 data-i18n="addTitle">Agregar Nueva Actividad</h2>
+
+                <form id="activityForm" class="activity-form">
+                    <div class="form-group">
+                        <label data-i18n="title">Título *</label>
+                        <input type="text" id="title" required maxlength="200" placeholder="Ej: Implementar API REST">
+                    </div>
+
+                    <div class="form-group">
+                        <label data-i18n="description">Descripción</label>
+                        <textarea id="description" rows="3" placeholder="Detalles opcionales..."></textarea>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label data-i18n="category">Categoría *</label>
+                            <select id="category" required></select>
+                        </div>
+
+                        <div class="form-group">
+                            <label data-i18n="duration">Duración (minutos) *</label>
+                            <input type="number" id="duration" required min="1" max="1440" value="60">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label data-i18n="startTime">Fecha y hora de inicio *</label>
+                            <input type="datetime-local" id="startTime" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label data-i18n="productivity">Productividad (1-10)</label>
+                            <input type="number" id="productivity" min="1" max="10" placeholder="Opcional">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-primary btn-large">
+                        <span data-i18n="save">Guardar Actividad</span>
+                    </button>
+                </form>
+
+                <div id="recentActivities" class="recent-activities">
+                    <h3 data-i18n="recentActivities">Actividades Recientes</h3>
+                    <div id="activitiesList"></div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>
+                Built by <a href="https://linkedin.com/in/ivan-arias-993587233" target="_blank">Iván Arias G.</a>
+                · <a href="https://github.com/IvanArias77/pyassistant-analytics" target="_blank">GitHub</a>
+                · <span data-i18n="madeWith">Hecho con FastAPI + Gemini + Chart.js</span>
+            </p>
+        </div>
+    </footer>
+
+    <script src="/static/js/app.js"></script>
+</body>
+</html>
