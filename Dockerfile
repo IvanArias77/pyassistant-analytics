@@ -17,18 +17,15 @@ COPY backend/ .
 # Create directory for SQLite database
 RUN mkdir -p /app/data
 
-# Set environment defaults
+# Set environment defaults (PORT is overridden by Railway)
 ENV PYTHONUNBUFFERED=1 \
-    PORT=8000 \
     HOST=0.0.0.0 \
     DEBUG=False
 
-# Expose port
+# Expose port (Railway will set actual PORT via env var)
 EXPOSE 8000
 
-# Health check using urllib (no extra deps needed)
-HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
-  CMD python -c "import urllib.request; urllib.request.urlopen('http://localhost:8000/api/health').read()" || exit 1
-
 # Run with gunicorn + uvicorn workers for production
-CMD ["gunicorn", "main:app", "--workers", "2", "--worker-class", "uvicorn.workers.UvicornWorker", "--bind", "0.0.0.0:8000", "--access-logfile", "-", "--timeout", "120"]
+# Uses Railway's $PORT env var (defaulting to 8000 if not set)
+CMD ["sh", "-c", "gunicorn main:app --workers 2 --worker-class uvicorn.workers.UvicornWorker --bind 0.0.0.0:${PORT:-8000} --access-logfile - --timeout 120"]</content>
+</invoke>
