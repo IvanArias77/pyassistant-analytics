@@ -23,7 +23,7 @@ ENV PYTHONUNBUFFERED=1 \
     DEBUG=False
 
 # Expose port (Railway will set actual PORT via env var)
-EXPOSE 8000
+EXPOSE 8787
 
 # Run with gunicorn + uvicorn workers for production
 # Railway replaces $PORT with the actual port number

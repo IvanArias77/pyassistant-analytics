@@ -1,48 +1,42 @@
-# Python
 __pycache__/
-*.py[cod]
-*$py.class
-*.so
+*.pyc
+*.pyo
+*.pyd
 .Python
-*.egg-info/
-.pytest_cache/
+*.so
 .coverage
+.coverage.*
 htmlcov/
 
-# Virtual environments
+# Virtual envs
 venv/
 env/
 ENV/
 .venv
 
-# Environment
+# Environment / secrets — never commit
 .env
-.env.local
+.env.*
+!.env.example
 
-# Database
+# Local data
 *.db
 *.sqlite
 *.sqlite3
+data/
+!data/seed.py
+!data/.gitkeep
 
-# IDE
-.vscode/
-.idea/
-*.swp
-*.swo
-
-# OS
+# OS / editor
 .DS_Store
 Thumbs.db
+.vscode/
+.idea/
 
-# Logs
-*.log
-logs/
+# Test / verify scratch (Temp-based ad-hoc scripts only)
+*.tmp
 
-# Build
-dist/
-build/
-*.spec
-
-# Data
-data/pyassistant.db
-data/test.db
+# Docs / scaffolding artifacts
+Ivan_Arias_Deploy_Guide_Railway.docx
+Ivan_Arias_Deploy_Guide_Railway.pdf
+deploy_to_railway.ps1
