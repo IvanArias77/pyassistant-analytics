@@ -1,18 +1,18 @@
 #!/bin/sh
 
-# Set environment variables
+# PyAssistant Analytics - production start script
+# Container starts here (railway.json -> "sh backend/start.sh").
+# Dependencies are installed at BUILD time by the Dockerfile,
+# so this script only configures env and boots gunicorn.
+
 export PYTHONUNBUFFERED=1
-export HOST=0.0.0.0
-export DEBUG=False
+export HOST="${HOST:-0.0.0.0}"
+export PORT="${PORT:-8787}"
 
-# Activate virtual environment (just in case)
-echo 'Activating venv...'
-python -m venv venv
-source venv/bin/activate
-
-# Install dependencies
-echo 'Installing dependencies...'
-pip install --no-cache-dir -r requirements.txt
-
-# Run the application with gunicorn
-exec gunicorn main:app --workers 2 --worker-class uvicorn.workers.UvicornWorker --bind 0.0.0.0:$PORT --access-logfile - --timeout 120
+exec gunicorn main:app \
+    --workers 2 \
+    --worker-class uvicorn.workers.UvicornWorker \
+    --bind "${HOST}:${PORT}" \
+    --timeout 120 \
+    --keep-alive 5 \
+    --access-logfile -
