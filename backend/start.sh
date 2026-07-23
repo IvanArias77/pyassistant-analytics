@@ -7,7 +7,7 @@
 
 export PYTHONUNBUFFERED=1
 export HOST="${HOST:-0.0.0.0}"
-export PORT="${PORT:-8787}"
+export PORT="${PORT:-8080}"
 
 exec gunicorn main:app \
     --workers 2 \
